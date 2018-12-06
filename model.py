@@ -15,8 +15,3 @@ class Model(Observable):
         self.notify()
         print("notify")
 
-model = Model()
-print(model.field)
-
-model.setField(0,0,3)
-print(model.field)

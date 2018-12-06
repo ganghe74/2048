@@ -37,11 +37,10 @@ class GridLayout(QGridLayout):
 
 class Button(QToolButton):
 
-    def __init__(self, text, callback):
+    def __init__(self, text):
         super().__init__()
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.setText(text)
-        self.clicked.connect(callback)
 
     def sizeHint(self):
         size = super(Button, self).sizeHint()
@@ -60,8 +59,8 @@ class mainView(QWidget) :
         tryLabel = QLabel("try")
         tryLabel.setStyleSheet('font-size: 12pt;')
         tryEdit = QLineEdit()
-        newGameButton = QPushButton("new Game")
-        widgetList = [scoreLabel, scoreEdit, tryLabel, tryEdit, newGameButton]
+        self.newGameButton = QPushButton("new Game")
+        widgetList = [scoreLabel, scoreEdit, tryLabel, tryEdit, self.newGameButton]
         layout = QHBoxLayout()
         v1 = QVBoxLayout()
         for i in widgetList :
@@ -70,9 +69,9 @@ class mainView(QWidget) :
                 v1.addStretch(1)
         v1.addStretch(22)
 
-        g1 = GridLayout()
+        self.g1 = GridLayout()
 
-        layout.addLayout(g1)
+        layout.addLayout(self.g1)
         layout.addLayout(v1)
         self.setLayout(layout)
 
@@ -81,11 +80,11 @@ class startView(QWidget) :
     def __init__(self, parent=None):
         super().__init__(parent)
         self.resize(300, 300)
-        threeButton = Button("3 x 3", self.buttonClicked)
-        fourButton = Button("4 x 4", self.buttonClicked)
-        fiveButton = Button("5 x 5", self.buttonClicked)
-        sixButton = Button("6 x 6", self.buttonClicked)
-        buttonList = [threeButton, fourButton, fiveButton, sixButton]
+        self.threeButton = Button("3 x 3")
+        self.fourButton = Button("4 x 4")
+        self.fiveButton = Button("5 x 5")
+        self.sixButton = Button("6 x 6")
+        buttonList = [self.threeButton, self.fourButton, self.fiveButton, self.sixButton]
 
         for i in buttonList :
             i.setStyleSheet('font-size: 20pt; font-family: Courier;')
@@ -94,17 +93,6 @@ class startView(QWidget) :
         for i in buttonList :
             mainLayout.addWidget(i)
         self.setLayout(mainLayout)
-
-    def buttonClicked(self):
-        sender = self.sender()
-        if sender == "3 x 3" :
-            pass                  # controller 호출
-        elif sender == "4 x 4" :
-            pass
-        elif sender == "5 x 5" :
-            pass
-        else :
-            pass
 
 
 
