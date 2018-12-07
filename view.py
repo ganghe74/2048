@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWidgets import QLayout, QGridLayout
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel
@@ -33,7 +33,6 @@ class GridLayout(QGridLayout):
             for j in range(n):
                 self.labels[i][j].setVisible(True)
 
-
 class Button(QToolButton):
     def __init__(self, text):
         super().__init__()
@@ -48,24 +47,29 @@ class Button(QToolButton):
 
 
 class mainView(QWidget) :
-    def __init__(self, parent=None):
-        super().__init__(parent)
+
+    keyPressed = pyqtSignal(int)
+
+    def __init__(self):
+        super().__init__()
         self.setWindowTitle("2048")
         self.g1 = GridLayout()
         self.scoreLabel = QLabel("score")
         self.scoreLabel.setStyleSheet('font-size: 12pt;')
         self.scoreEdit = QLineEdit()
+        self.scoreEdit.setReadOnly(True)
         self.tryLabel = QLabel("try")
         self.tryLabel.setStyleSheet('font-size: 12pt;')
         self.tryEdit = QLineEdit()
+        self.tryEdit.setReadOnly(True)
         self.newGameButton = QPushButton("new Game")
         self.upButton = Button("up")
         self.downButton = Button("down")
         self.leftButton = Button("left")
-        self.rigthButton = Button("right")
+        self.rightButton = Button("right")
         self.buttonVisible = QPushButton("Open Keys")
         self.buttonVisible.clicked.connect(self.keySetting)
-        self.buttonList = [self.upButton, self.downButton, self.leftButton, self.rigthButton]
+        self.buttonList = [self.upButton, self.downButton, self.leftButton, self.rightButton]
         widgetList = [self.scoreLabel, self.scoreEdit, self.tryLabel, self.tryEdit, self.newGameButton]
         layout = QHBoxLayout()
         self.v1 = QVBoxLayout()
@@ -78,7 +82,7 @@ class mainView(QWidget) :
         self.g2 = QGridLayout()
         self.g2.addWidget(self.upButton, 0, 1)
         self.g2.addWidget(self.leftButton, 1, 0)
-        self.g2.addWidget(self.rigthButton, 1, 2)
+        self.g2.addWidget(self.rightButton, 1, 2)
         self.g2.addWidget(self.downButton, 2, 1)
         for i in self.buttonList :
             i.setVisible(False)
@@ -105,6 +109,19 @@ class mainView(QWidget) :
                 i.setVisible(False)
             self.buttonVisible.setText("Open Keys")
 
+    def keyPressEvent(self ,e):
+        self.keyPressed.emit(e.key())
+
+    def update(self, model):
+        self.scoreEdit.setText(str(model.score))
+        self.tryEdit.setText(str(model.tries))
+        for row in range(6):
+            for column in range(6):
+                num = str(model.field[row][column])
+                if num == '0':
+                    num = ''
+                self.g1.labels[row][column].setText(num)
+        
 
 class startView(QWidget) :
     def __init__(self, parent=None):
@@ -140,4 +157,3 @@ if __name__ == '__main__':
     StartView = startView()
     View.show()
     sys.exit(app.exec_())
-

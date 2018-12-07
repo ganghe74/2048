@@ -1,4 +1,6 @@
-def moveUp(lists) :
+from model import Model
+
+def up(lists) :
     for k in range(5) :
         for i in range(5) :
             for j in range(6) :
@@ -13,7 +15,7 @@ def moveUp(lists) :
     return lists
 
 
-def moveDown(lists, size) :
+def down(lists, size) :
     for k in range(5) :
         for i in range(5) :
             list = lists[i]
@@ -34,7 +36,7 @@ def moveDown(lists, size) :
     return lists
 
 
-def moveLeft(lists) :
+def left(lists) :
     for i in lists :
         for k in range(5) :
             for j in range(6) :
@@ -55,7 +57,7 @@ def moveLeft(lists) :
     return lists
 
 
-def moveRight(lists, size) :
+def right(lists, size) :
     for i in lists :
         for k in range(size-1) :
             for j in range(size) :
@@ -71,3 +73,16 @@ def moveRight(lists, size) :
                     i[j+1] = n+n
                     i[j] = 0
     return lists
+
+if __name__ == '__main__':
+    model = Model()
+    for i in range(10):
+        model.generate(2)
+    print("=====Before=====")
+    for row in model.field:
+        print(row)
+
+    print("\n=====After=====")
+    result = left(model.field)
+    for row in result:
+        print(row)
