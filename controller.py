@@ -14,26 +14,31 @@ class Controller:
         self.mainView.downButton.clicked.connect(self.push)
         self.mainView.rightButton.clicked.connect(self.push)
         self.mainView.leftButton.clicked.connect(self.push)
-        #self.mainView.keyPressed.connect(self.push) 키바인딩 추후작업
+        self.mainView.keyPressed.connect(self.push)
 
     def gameStart(self):
         sender = self.startView.sender()
         n = int(sender.text()[0])
         self.model.N = n
+        self.model.generate(2)
         self.startView.hide()
         self.mainView.g1.setN(n)
         self.mainView.show()
 
     def newGame(self):
         self.mainView.hide()
+        self.model.field = [[0 for i in range(6)] for j in range(6)]
         self.startView.show()
 
     def push(self, e=0):
-        direction = e
+        keys = {87:'up', 83:'down', 65:'left', 68:'right'}
         if e == 0:
             sender = self.mainView.sender()
             direction = sender.text()
-        print(direction)
+        elif e in keys:
+            direction = keys[e]
+        else:
+            return
         if direction == 'up':
             model.field = push.up(model.field)
         elif direction == 'down':
