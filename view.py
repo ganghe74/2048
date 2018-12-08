@@ -132,22 +132,6 @@ class mainView(QWidget) :
                     num = ''
                 self.g1.labels[row][column].setText(num)
 
-    def changeColor(self, list):
-        score = [0, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
-        color = [(0, 0),(10, 40), (30, 60), (60, 60), (80, 40), (120, 50), (160, 50), (180, 50)
-                ,(200, 50), (220, 50), (270, 20), (270, 80), (300, 80)]
-        for i in range(6) :
-            for j in range(6) :
-                theColor = color[score.index(int(self.g1[i][j]))]
-                self.g1[i][j].setStyleSheet(
-                "font-size : 25px;"
-                "background-color : hsl({0:0.0f}, 20%, 100%);"
-                "min-width: 120px;"
-                "min-height: 120px;"
-                    .format(score.index(theColor[0], theColor[1]))
-                )
-        
-
 class startView(QWidget) :
     def __init__(self, parent=None):
         super().__init__(parent)

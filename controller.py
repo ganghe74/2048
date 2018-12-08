@@ -14,40 +14,44 @@ class Controller:
         self.mainView.downButton.clicked.connect(self.push)
         self.mainView.rightButton.clicked.connect(self.push)
         self.mainView.leftButton.clicked.connect(self.push)
-        #self.mainView.keyPressed.connect(self.push) 키바인딩 추후작업
+        self.mainView.keyPressed.connect(self.push)
 
     def gameStart(self):
         sender = self.startView.sender()
         n = int(sender.text()[0])
         self.model.N = n
+        self.model.generate(2)
         self.startView.hide()
         self.mainView.g1.setN(n)
         self.mainView.show()
 
     def newGame(self):
         self.mainView.hide()
+        self.model.field = [[0 for i in range(6)] for j in range(6)]
         self.startView.show()
 
     def push(self, e=0):
-        direction = e
+        keys = {87:'up', 83:'down', 65:'left', 68:'right'}
+        functions = {'up':push.up, 'down':push.down, 'left':push.left, 'right':push.right}
         if e == 0:
             sender = self.mainView.sender()
             direction = sender.text()
-        print(direction)
-        if direction == 'up':
-            model.field = push.up(model.field)
-        elif direction == 'down':
-            model.field = push.down(model.field, model.N)
-        elif direction == 'left':
-            model.field = push.left(model.field)
-        elif direction == 'right':
-            model.field = push.right(model.field, model.N)
-
-        if model.isMovable():
+        elif e in keys:
+            direction = keys[e]
+        else:
+            return
+        
+        if model.isMovable(direction):
+            print("move with ", direction)
+            model.field = functions[direction](model.field, model.N)
             model.generate(2)
             model.tries += 1
-        else:
-            print("Game Over!!!!!!!!")
+
+        if model.isFinished():
+            self.gameOver()
+
+    def gameOver(self):
+        print("Game Over!!!!!!!!!!!!")
 
 if __name__ == '__main__':
     import sys
