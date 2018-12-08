@@ -60,37 +60,75 @@ class Model(Observable):
         print("generate", num, "at", row, column)
         self.notify()
 
-    def isMovable(self):
+    def isMovable(self, direction): # 필드가 direction 방향으로 이동가능한가?
+        dic = {"up":(-1,0), "down":(1,0), "left":(0,-1), "right":(0,1)}
+        dy = dic[direction][0]
+        dx = dic[direction][1]
+        for row in range(self.N):
+            for column in range(self.N):
+                ny = row + dy
+                nx = column + dx
+                if ny >=0 and ny < self.N and nx >= 0 and nx < self.N:
+                    if self.field[row][column] != 0:
+                        if self.field[row][column] == self.field[ny][nx] or self.field[ny][nx] == 0:
+                            return True
+
+        return False
+
+    def isFinished(self): # 게임이 끝낫는가? ( 더 움직일수 없는가? )
         dy = [1,-1,0,0]
         dx = [0,0,1,-1]
         for row in range(self.N):
             for column in range(self.N):
                 if self.field[row][column] == 0:
-                    return True
+                    return False
                 for k in range(4):
                     ny = row + dy[k]
                     nx = column + dx[k]
                     if ny >= 0 and ny < self.N and nx >= 0 and nx < self.N:
                         if self.field[row][column] == self.field[ny][nx]:
-                            return True
-        return False
+                            return False
+        return True
 
 
 if __name__ == '__main__': # 유닛테스트때 사용예정
     model = Model()
     print(model.field)
-    print(model.isMovable())
+    print(model.isFinished())
+    print("is movable with \"up\"?", model.isMovable("up"))
+    print()
+
     model.field = [[2,2,2,2], [2,2,2,2], [2,2,2,2], [2,2,2,2]]
     print(model.field)
-    print(model.isMovable())
+    print(model.isFinished())
+    print("is movable wtih \"up\"?", model.isMovable("up"))
+    print()
+
     model.field = [[2,4,2,4], [4,2,4,2], [2,4,2,4], [4,2,4,2]]
     print(model.field)
-    print(model.isMovable())
+    print(model.isFinished())
+    print("is movable with \"up\"?", model.isMovable("up"))
+    print()
+    
     model.field = [[2,4,2,4], [4,2,4,2], [2,4,2,4], [4,2,4,0]]
     print(model.field)
-    print(model.isMovable())
+    print(model.isFinished())
+    print("is movable with \"up\"?", model.isMovable("up"))
+    print("is movable with \"down\"?", model.isMovable("down"))
+    print("is movable with \"left\"?", model.isMovable("left"))
+    print("is movable with \"right\"?", model.isMovable("right"))
+    print()
+
     model.generate(123)
     print(model.field)
     print(model.field[0][0])
     model.field[0][0] = 1234
     print(model.field)
+    print()
+
+    model.field = [[2,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]]
+    print(model.field)
+    print("is movable with \"up\"?", model.isMovable("up"))
+    print("is movable with \"down\"?", model.isMovable("down"))
+    print("is movable with \"left\"?", model.isMovable("left"))
+    print("is movable with \"right\"?", model.isMovable("right"))

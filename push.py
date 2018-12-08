@@ -1,6 +1,6 @@
 from model import Model
 
-def up(lists) :
+def up(lists, size) :
     for k in range(5) :
         for i in range(5) :
             for j in range(6) :
@@ -36,7 +36,7 @@ def down(lists, size) :
     return lists
 
 
-def left(lists) :
+def left(lists, size) :
     for i in lists :
         for k in range(5) :
             for j in range(6) :
@@ -83,6 +83,6 @@ if __name__ == '__main__':
         print(row)
 
     print("\n=====After=====")
-    result = left(model.field)
+    result = left(model.field, 4)
     for row in result:
         print(row)

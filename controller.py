@@ -32,6 +32,7 @@ class Controller:
 
     def push(self, e=0):
         keys = {87:'up', 83:'down', 65:'left', 68:'right'}
+        functions = {'up':push.up, 'down':push.down, 'left':push.left, 'right':push.right}
         if e == 0:
             sender = self.mainView.sender()
             direction = sender.text()
@@ -39,20 +40,18 @@ class Controller:
             direction = keys[e]
         else:
             return
-        if direction == 'up':
-            model.field = push.up(model.field)
-        elif direction == 'down':
-            model.field = push.down(model.field, model.N)
-        elif direction == 'left':
-            model.field = push.left(model.field)
-        elif direction == 'right':
-            model.field = push.right(model.field, model.N)
-
-        if model.isMovable():
+        
+        if model.isMovable(direction):
+            print("move with ", direction)
+            model.field = functions[direction](model.field, model.N)
             model.generate(2)
             model.tries += 1
-        else:
-            print("Game Over!!!!!!!!")
+
+        if model.isFinished():
+            self.gameOver()
+
+    def gameOver(self):
+        print("Game Over!!!!!!!!!!!!")
 
 if __name__ == '__main__':
     import sys
