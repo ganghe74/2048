@@ -140,36 +140,6 @@ def right(lists, size) :
     return lists, score
 
 
-def right2(lists, size) :
-    score = 0
-    for i in lists :
-        for k in range(size-1) :
-            for j in range(size) :
-                n = i[j]
-                if j == size-1 :
-                    continue
-                if n == 0 :
-                    continue
-                if i[j + 1] == 0:
-                    i[j + 1] = n
-                    i[j] = 0
-    for i in lists :
-        for k in range(size-1) :
-            for j in range(size) :
-                n = i[j]
-                if i[j+1] == n :
-                    i[j+1] = n+n
-                    i[j] = 0
-                    score += n*2
-    for i in lists :
-        for k in range(size-1) :
-            for j in range(size) :
-                n = i[j]
-                if i[j+1] == 0 :
-                    i[j+1] = n
-                    i[j] = 0
-    return lists, score
-
 if __name__ == '__main__':
     model = Model()
     for i in range(10):
