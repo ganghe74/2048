@@ -120,7 +120,6 @@ class mainView(QWidget) :
         for row in range(6):
             for column in range(6):
                 theColor = color[score.index(model.field[row][column])]
-                print(theColor)
                 self.g1.labels[row][column].setStyleSheet(
                 "font-size : 25px;"
                 "background-color : hsl({}, {}%, 100%);"

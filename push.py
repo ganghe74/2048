@@ -1,6 +1,7 @@
 from model import Model
 
 def up(lists) :
+    score = 0
     for k in range(5) :
         for i in range(5) :
             for j in range(6) :
@@ -9,18 +10,29 @@ def up(lists) :
                     if lists[i+1][j] != 0 :
                         lists[i][j] = lists[i+1][j]
                         lists[i+1][j] = 0
-                elif lists[i][j] == lists[i+1][j] :
-                    lists[i][j] = n+n
-                    lists[i+1][j] = 0
-    return lists
-
+    for i in range(5) :
+        for j in range(6) :
+            n = lists[i][j]
+            if lists[i][j] == lists[i+1][j] :
+                lists[i][j] = n*2
+                lists[i+1][j] = 0
+                score += n*2
+    for i in range(2) :
+        for i in range(5) :
+            for j in range(6) :
+                n = lists[i][j]
+                if n == 0 :
+                    if lists[i+1][j] != 0 :
+                        lists[i][j] = lists[i+1][j]
+                        lists[i+1][j] = 0
+    return lists, score
 
 def down(lists, size) :
+    score = 0
     for k in range(5) :
         for i in range(5) :
-            list = lists[i]
             for j in range(6) :
-                n = list[j]
+                n = lists[i][j]
                 if i >= size-1 :
                     continue
                 if n == 0 :
@@ -28,17 +40,56 @@ def down(lists, size) :
                 if lists[i+1][j] == 0 :
                     lists[i+1][j] = n
                     lists[i][j] = 0
-                elif lists[i+1][j] == n :
-                    lists[i+1][j] += n
-                    lists[i][j] = 0
-                else :
+    for i in range(5) :
+        for j in range(6) :
+            n = lists[i][j]
+            if i >= size-1 :
+                continue
+            if n == 0 :
+                continue
+            if lists[i+1][j] == n :
+                lists[i+1][j] += n
+                lists[i][j] = 0
+                score += n*2
+    for k in range(2) :
+        for i in range(5) :
+            for j in range(6) :
+                n = lists[i][j]
+                if i >= size-1 :
                     continue
-    return lists
-
+                if n == 0 :
+                    continue
+                if lists[i+1][j] == 0 :
+                    lists[i+1][j] = n
+                    lists[i][j] = 0
+    return lists, score
 
 def left(lists) :
+    score = 0
+    for k in range(5):
+        for i in lists:
+            for j in range(6):
+                n = i[j]
+                if n == 0:
+                    continue
+                else:
+                    if j - 1 < 0:
+                        continue
+                    if i[j-1] == 0 :
+                        i[j-1] += n
+                        i[j] = 0
     for i in lists :
-        for k in range(5) :
+        for j in range(6) :
+            n = i[j]
+            if n == 0 :
+                continue
+            else :
+                if n == i[j-1] :
+                    i[j-1] += n
+                    i[j] = 0
+                    score += n*2
+    for k in range(2) :
+        for i in lists :
             for j in range(6) :
                 n = i[j]
                 if n == 0 :
@@ -46,20 +97,15 @@ def left(lists) :
                 else :
                     if j-1 < 0 :
                         continue
-                    if n == i[j-1] :
-                        i[j-1] = n+n
+                    if i[j-1] == 0 :
+                        i[j-1] += n
                         i[j] = 0
-                    elif i[j-1] == 0 :
-                        i[j-1] = n
-                        i[j] = 0
-                    else :
-                        continue
-    return lists
-
+    return lists, score
 
 def right(lists, size) :
-    for i in lists :
-        for k in range(size-1) :
+    score = 0
+    for k in range(size-1) :
+        for i in lists :
             for j in range(size) :
                 n = i[j]
                 if j == size-1 :
@@ -69,10 +115,60 @@ def right(lists, size) :
                 if i[j+1] == 0 :
                     i[j+1] = n
                     i[j] = 0
-                elif i[j+1] == n :
+    for i in lists :
+        for j in range(size) :
+            n = i[j]
+            if j == size-1 :
+                continue
+            if n == 0 :
+                continue
+            if i[j+1] == n :
+                i[j+1] += n
+                i[j] = 0
+                score += 2*n
+    for k in range(2) :
+        for i in lists :
+            for j in range(size) :
+                n = i[j]
+                if j == size-1 :
+                    continue
+                if n == 0 :
+                    continue
+                if i[j+1] == 0 :
+                    i[j+1] = n
+                    i[j] = 0
+    return lists, score
+
+
+def right2(lists, size) :
+    score = 0
+    for i in lists :
+        for k in range(size-1) :
+            for j in range(size) :
+                n = i[j]
+                if j == size-1 :
+                    continue
+                if n == 0 :
+                    continue
+                if i[j + 1] == 0:
+                    i[j + 1] = n
+                    i[j] = 0
+    for i in lists :
+        for k in range(size-1) :
+            for j in range(size) :
+                n = i[j]
+                if i[j+1] == n :
                     i[j+1] = n+n
                     i[j] = 0
-    return lists
+                    score += n*2
+    for i in lists :
+        for k in range(size-1) :
+            for j in range(size) :
+                n = i[j]
+                if i[j+1] == 0 :
+                    i[j+1] = n
+                    i[j] = 0
+    return lists, score
 
 if __name__ == '__main__':
     model = Model()
@@ -86,3 +182,10 @@ if __name__ == '__main__':
     result = left(model.field)
     for row in result:
         print(row)
+
+
+def up2(list) :
+    for i in range(6) :
+        # prtList =
+        for j in range(5, -1, -1) :
+            pass
