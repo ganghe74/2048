@@ -45,10 +45,6 @@ class Model(Observable):
         self.__tries = tries
         self.notify()
 
-    def setField(self, row, column, num):
-        self.__field[row][column] = num
-        self.notify()
-
     def generate(self, num): # 필드가 꽉차있을때 (0이없을때) generate하면 에러남
         row = random.randrange(self.N)
         column = random.randrange(self.N)
@@ -85,7 +81,7 @@ class Model(Observable):
                 for k in range(4):
                     ny = row + dy[k]
                     nx = column + dx[k]
-                    if 0 <= ny <= self.N and 0 <= nx <= self.N:
+                    if 0 <= ny < self.N and 0 <= nx < self.N:
                         if self.field[row][column] == self.field[ny][nx]:
                             return False
         return True
