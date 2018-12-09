@@ -43,12 +43,14 @@ class Controller:
         
         if model.isMovable(direction):
             print("move with ", direction)
-            model.field = functions[direction](model.field, model.N)
+            model.field, score = functions[direction](model.field, model.N)
+            model.score += score
             model.generate(2)
             model.tries += 1
 
         if model.isFinished():
             self.gameOver()
+            self.mainView.gameOver()
 
     def gameOver(self):
         print("Game Over!!!!!!!!!!!!")

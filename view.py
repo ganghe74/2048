@@ -4,6 +4,24 @@ from PyQt5.QtWidgets import QLayout, QGridLayout
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel
 from PyQt5.QtWidgets import QTextEdit, QLineEdit, QPushButton, QToolButton, QSizePolicy
 from PyQt5 import QtCore
+from PyQt5.QtWidgets import QDialog
+
+class GameOverDialog(QDialog) :
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("game over!")
+        self.l1 = QLabel("game over!")
+        self.l1.setStyleSheet("font-size : 25px;")
+        self.l1.setAlignment(QtCore.Qt.AlignCenter)
+        self.b1 = QPushButton("close")
+        v1 = QVBoxLayout()
+        v1.addWidget(self.l1)
+        v1.addWidget(self.b1)
+        self.setLayout(v1)
+        self.b1.clicked.connect(self.buttonClicked)
+
+    def buttonClicked(self):
+        self.close()
 
 class GridLayout(QGridLayout):
     def __init__(self):
@@ -131,6 +149,10 @@ class mainView(QWidget) :
                 if num == '0':
                     num = ''
                 self.g1.labels[row][column].setText(num)
+
+    def gameOver(self):
+        d = GameOverDialog()
+        d.exec_()
 
 class startView(QWidget) :
     def __init__(self, parent=None):

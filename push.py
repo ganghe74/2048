@@ -1,6 +1,6 @@
 from model import Model
 
-def up(lists) :
+def up(lists, size) :
     score = 0
     for k in range(5) :
         for i in range(5) :
@@ -30,41 +30,33 @@ def up(lists) :
 def down(lists, size) :
     score = 0
     for k in range(5) :
-        for i in range(5) :
+        for i in range(size-1, 0, -1) :
             for j in range(6) :
                 n = lists[i][j]
-                if i >= size-1 :
-                    continue
                 if n == 0 :
-                    continue
-                if lists[i+1][j] == 0 :
-                    lists[i+1][j] = n
-                    lists[i][j] = 0
-    for i in range(5) :
+                    if lists[i-1][j] != 0 :
+                        lists[i][j] = lists[i-1][j]
+                        lists[i-1][j] = 0
+    for i in range(size-1, 0, -1) :
         for j in range(6) :
             n = lists[i][j]
-            if i >= size-1 :
-                continue
             if n == 0 :
                 continue
-            if lists[i+1][j] == n :
-                lists[i+1][j] += n
-                lists[i][j] = 0
+            if lists[i-1][j] == n :
+                lists[i][j] += n
+                lists[i-1][j] = 0
                 score += n*2
     for k in range(2) :
-        for i in range(5) :
+        for i in range(size-1, 0, -1) :
             for j in range(6) :
                 n = lists[i][j]
-                if i >= size-1 :
-                    continue
                 if n == 0 :
-                    continue
-                if lists[i+1][j] == 0 :
-                    lists[i+1][j] = n
-                    lists[i][j] = 0
+                    if lists[i-1][j] != 0 :
+                        lists[i][j] = lists[i-1][j]
+                        lists[i-1][j] = 0
     return lists, score
 
-def left(lists) :
+def left(lists, size) :
     score = 0
     for k in range(5):
         for i in lists:
@@ -152,10 +144,3 @@ if __name__ == '__main__':
     result = left(model.field)
     for row in result:
         print(row)
-
-
-def up2(list) :
-    for i in range(6) :
-        # prtList =
-        for j in range(5, -1, -1) :
-            pass
