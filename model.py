@@ -68,7 +68,7 @@ class Model(Observable):
             for column in range(self.N):
                 ny = row + dy
                 nx = column + dx
-                if ny >=0 and ny < self.N and nx >= 0 and nx < self.N:
+                if 0 <= ny < self.N and 0 <= nx < self.N:
                     if self.field[row][column] != 0:
                         if self.field[row][column] == self.field[ny][nx] or self.field[ny][nx] == 0:
                             return True
@@ -85,7 +85,7 @@ class Model(Observable):
                 for k in range(4):
                     ny = row + dy[k]
                     nx = column + dx[k]
-                    if ny >= 0 and ny < self.N and nx >= 0 and nx < self.N:
+                    if 0 <= ny <= self.N and 0 <= nx <= self.N:
                         if self.field[row][column] == self.field[ny][nx]:
                             return False
         return True
