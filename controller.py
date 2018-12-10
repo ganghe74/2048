@@ -28,8 +28,6 @@ class Controller:
     def newGame(self):
         self.mainView.hide()
         self.model.field = [[0 for i in range(6)] for j in range(6)]
-        self.model.tries = 0
-        self.model.score = 0
         self.startView.show()
 
     def push(self, e=0):
@@ -43,18 +41,18 @@ class Controller:
         else:
             return
         
-        if model.isMovable(direction):
-            print("move with", direction)
-            model.field, score = functions[direction](model.field, model.N)
-            model.score += score
-            model.generate(2)
-            model.tries += 1
+        if self.model.isMovable(direction):
+            print("move with ", direction)
+            self.model.field, score = functions[direction](self.model.field, self.model.N)
+            self.model.score += score
+            self.model.generate(2)
+            self.model.tries += 1
 
-        if model.isFinished():
+        if self.model.isFinished():
             self.gameOver()
+            self.mainView.gameOver()
 
     def gameOver(self):
-        self.mainView.gameOver()
         print("Game Over!!!!!!!!!!!!")
 
 if __name__ == '__main__':
